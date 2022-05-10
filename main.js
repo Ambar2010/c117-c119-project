@@ -2,16 +2,44 @@ quick_draw_data_set=["aircraft carrier","airplane","alarm clock","ambulance","an
 function setup() {
     canvas = createCanvas(300,300);
     canvas.center();
+    background("white");
+    check_sketch();
+}
+function clearCanvas() {
+    background("white");
 }
 sketch= quick_draw_data_set;
 console.log(sketch);
+
+random_no = Math.floor(sketch);
+Math.random(quick_draw_data_set);
 document.getElementById("sketch_to_be_drawn").value = "Sketch to be drawn "+sketch;
-random_no = 0;
 timer_counter = 0;
 timer_check  = "";
-answer_holder = "";
-drawn_sketch = "";
-score = 0;
+counter=0;
+answer_holder = "set";
+drawn_sketch = sketch;
+score = drawn_sketch;
+document.getElementById("score").value = score;
+function check_sketch() {
+    if(drawn_sketch == sketch) {
+        timer_counter = 1;
+        if(timer_counter == 1) {
+            counter++
+            document.getElementById("timer").innerHTML = "Timer : " + counter;
+            console.log(timer_counter);
+        }
+        }
+    }
+    if(timer_counter ==400) {
+        timer_counter = 0;
+        timer_check = "completed";
+        if(timer_check == "completed", answer_holder == "set") {
+            timer_check = "";
+            answer_holder = "";
+            clearCanvas();
+        } 
+}
 
 array_1=["pen","paper","book","bottle"]
 random_no = Math.floor((Math.random()*array_1.length)+1)

@@ -17,11 +17,11 @@ h1
 
 canvas 
   {
-    border:5px solid white;
+    border:5px solid rgb(141, 131, 131);
     border-radius:20px;
     animation-name: example;
     animation-duration: 4s;
-    margin-top: 100px; 
+    margin-top: 150px; 
     animation-iteration-count: infinite;
     
 }
