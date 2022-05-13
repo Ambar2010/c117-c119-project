@@ -4,6 +4,8 @@ function setup() {
     canvas.center();
     background("white");
     check_sketch();
+    canvas.mouseReleased(classifyCanvas);
+    synth = window.speechSynthesis;
 }
 function clearCanvas() {
     background("white");
@@ -13,21 +15,35 @@ console.log(sketch);
 
 random_no = Math.floor(sketch);
 Math.random(quick_draw_data_set);
-document.getElementById("sketch_to_be_drawn").value = "Sketch to be drawn "+sketch;
 timer_counter = 0;
 timer_check  = "";
 counter=0;
 answer_holder = "set";
-drawn_sketch = sketch;
+drawn_sketch =results[0].label;;
 score = drawn_sketch;
 document.getElementById("score").value = score;
+function classifyCanvas() {
+    classifier.classify(canvas, gotResults);
+    }
+    function gotResults(error, results) {
+        if(error) {
+            console.error(error);
+        }
+        console.log(results);
+        document.getElementById("label").innerHTML = "Label : " + results[0].label;
+        document.getElementById("confidence").innerHTML = "Confidence : " + Math.round(results[0].confidence*100) + "%";
+        document.getElementById("sketch_to_be_drawn").innerHTML = "Sketch to be Drawn : " + drawn_sketch;
+        utterThis = new SpeechSynthesisUtterance(results[0].label);
+        synth.speak(utterThis);
+    }
 function check_sketch() {
-    if(drawn_sketch == sketch) {
-        timer_counter = 1;
-        if(timer_counter == 1) {
+    if(drawn_sketch == results[0].label) {
+        timer_counter = counter;
+        if(timer_counter == counter) {
             counter++
+            timer_counter = counter;
             document.getElementById("timer").innerHTML = "Timer : " + counter;
-            console.log(timer_counter);
+            console.log(counter);
         }
         }
     }
@@ -44,3 +60,13 @@ function check_sketch() {
 array_1=["pen","paper","book","bottle"]
 random_no = Math.floor((Math.random()*array_1.length)+1)
 Element_of_array = array_1[random_no]
+function preload() {
+    classifier = ml5.imageClassifier('DoodleNet');
+}
+function draw() {
+    strokeWeight(5);
+    stroke("black");
+    if(mouseIsPressed) {
+        line(pmouseX, pmouseY, mouseX, mouseY);
+    }
+}
